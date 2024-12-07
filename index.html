@@ -1,0 +1,239 @@
+<html style="height: 100%;">
+    <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <script src="https://kit.fontawesome.com/92c9b58fa8.js" crossorigin="anonymous"></script>
+    </head>
+    <body style="height: 100%;">
+        <div class="page">
+            <div class="container">
+                <div id="bingo" class="hidden bingo-title"><img src="./bubuchenewsub.gif"><span class="rotating"><span class="bingo-txt">BINGO</span><button onclick="continueBingo()">Continuer</button></span><img src="./bubuchenewsub.gif"></div>
+                <div class="cell" id="c0"><span class="cell-text cell-0">test</span></div>
+                <div class="cell" id="c1"><span class="cell-text cell-1">test</span></div>
+                <div class="cell" id="c2"><span class="cell-text cell-2">test</span></div>
+                <div class="cell" id="c3"><span class="cell-text cell-3">test</span></div>
+                <div class="cell" id="c4"><span class="cell-text cell-4">test</span></div>
+                <div class="cell" id="c5"><span class="cell-text cell-5">test</span></div>
+                <div class="cell" id="c6"><span class="cell-text cell-6">test</span></div>
+                <div class="cell" id="c7"><span class="cell-text cell-7">test</span></div>
+                <div class="cell" id="c8"><span class="cell-text cell-8">test</span></div>
+                <div class="cell" id="c9"><span class="cell-text cell-9">test</span></div>
+                <div class="cell" id="c10"><span class="cell-text cell-10">test</span></div>
+                <div class="cell" id="c11"><span class="cell-text cell-11">test</span></div>
+                <div class="cell" id="c12"><span class="cell-text cell-12">test</span></div>
+                <div class="cell" id="c13"><span class="cell-text cell-13">test</span></div>
+                <div class="cell" id="c14"><span class="cell-text cell-14">test</span></div>
+                <div class="cell" id="c15"><span class="cell-text cell-15">test</span></div>
+                <div class="cell" id="c16"><span class="cell-text cell-16">test</span></div>
+                <div class="cell" id="c17"><span class="cell-text cell-17">test</span></div>
+                <div class="cell" id="c18"><span class="cell-text cell-18">test</span></div>
+                <div class="cell" id="c19"><span class="cell-text cell-19">test</span></div>
+                <div class="cell" id="c20"><span class="cell-text cell-20">test</span></div>
+                <div class="cell" id="c21"><span class="cell-text cell-21">test</span></div>
+                <div class="cell" id="c22"><span class="cell-text cell-22">test</span></div>
+                <div class="cell" id="c23"><span class="cell-text cell-23">test</span></div>
+                <div class="cell" id="c24"><span class="cell-text cell-24">test</span></div>
+            </div>
+            <div class="side-panel">
+                <h1 class="title">🅑🅘🅝🅖🅞 🅜🅐🅝 🅥🅢 🅦🅘🅛🅓</h1>
+                <p><img src="./buchecontente.png" alt="happy log" class="wazo" ></p>
+                <div class="controls">
+                    <div class="control-line">
+                        <button onClick="window.location.reload();">Creer un nouveau bingo</button>
+                    </div>
+                    <div class="control-line">
+                        <button onClick="setTransparencyMode()">Mode transparence</button>
+                    </div>
+                    <div class="control-line">
+                        <button onClick="share()">Partager</button>
+                        <span id="sharingFeedBack" style="color: white;"></span>
+                    </div>
+                    <div class="control-line">
+                        <input type="text" id="sharingInput" />
+                        <button onClick="setGridFromImport()">Importer</button>
+                    </div>
+                    <div class="control-line">
+                        <p class="credits">Fait par <a href="https://github.com/LeGalAlexis/BingoBuche">Plogojowitz</a> pour le stream de <a href="https://www.twitch.tv/bubuchenbois">BubuchenBois</a></p>
+                    </div>
+                </div>
+                <audio controls id="birdmachine" class="hidden">
+                    <source src="./bird_machine_short.ogg" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio> 
+            </div>
+        </div>
+        <div id="rain"></div>
+        
+        <script>
+            var interval;
+            var displayInterval;
+            var hasAnimationBeenTriggered = false;
+            var audio = document.getElementById("birdmachine"); 
+            var shareString;
+            const cells = [{ id:1, text:"Mange un animal vivant" }, 
+                { id:2, text:"“C'est une bonne source de protéines”" }, 
+                { id:3, text:"Caca" },
+                { id:4, text:"Vomi" },
+                { id:5, text:"“Je connais un type”" },
+                { id:6, text:"Colon core" },
+                { id:7, text:"Bear se déshabille" },
+                { id:8, text:"Zoom crottes de nez" },
+                { id:9, text:"ASMR cronch" },
+                { id:10, text:"Le plus [adjectif] DU MONDE" },
+                { id:11, text:"Saute dans l'eau/la boue" },
+                { id:12, text:"S'étale quelque chose sur le visage" },
+                { id:13, text:"Bruit de cheval après effort" },
+                { id:14, text:"Une seule erreur et je suis mort" },
+                { id:15, text:"Ce truc a goût de poulet" },
+                { id:16, text:"Plante médicinale" },
+                { id:17, text:"Source d’eau inattendue" },
+                { id:18, text:"Il faut trouver un cours d'eau" },
+                { id:19, text:"Les locaux se foutent de sa gueule" },
+                { id:20, text:"Mise en danger volontaire pour le show" },
+                { id:21, text:"Cette plante/ cet animal peut vous tuer dans d'atroces souffrances" },
+                { id:22, text:"Caméraman en mode créatif " },
+                { id:23, text:"Anecdote où quelqu'un meurt" },
+                { id:24, text:"abri inattendu" }];
+
+            function shuffle(array) {
+                let currentIndex = array.length,  randomIndex;
+
+                // Tant qu'il reste des éléments à mélanger...
+                while (currentIndex != 0) {
+
+                    // Prendre un élément au hasard...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex--;
+
+                    // Et l'échanger avec l'element actuel.
+                    [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+                }
+
+                return array;
+            }
+
+            function setCell(item, index, arr) {
+                $(".cell-"+ index).text(item.text)
+            }
+
+            function setGrid() {
+                let gridCells = [...cells];
+                shuffle(gridCells);
+                shareString = gridCells.map(c => c.id).join(';');
+                gridCells.splice(12, 0, { id:0, text:"Pipi" });
+                gridCells.forEach(setCell);
+            }
+
+            function setGridFromImport() {
+                let sharingString = $('#sharingInput').val();
+                $('#sharingInput').val("");
+                let gridCells = sharingString.split(';').map(id => cells.find(c => c.id == id));
+                gridCells.splice(12, 0, { id:0, text:"Pipi" });
+                gridCells.forEach(setCell);
+            }
+
+            function share() {
+                navigator.clipboard.writeText(shareString);
+                $('#sharingFeedBack').text("Grille copiée dans le presse-papier !")
+                let textInterval = self.setInterval(function(){$('#sharingFeedBack').text(""); clearInterval(textInterval);},3000);
+            }
+
+            function isSelected(index) {
+                return $("#c"+ index).hasClass("selected")
+            }
+
+            function makeItRain() {
+                if(!hasAnimationBeenTriggered) {
+                    interval = self.setInterval(function(){addRandomImage()},50);
+                    $("#bingo").removeClass("hidden");
+                    audio.play();
+                    hasAnimationBeenTriggered = true;
+                }
+            }
+
+            const images = ["buchehap112px.png", "mims2.png", "pipe112px.png", "wazo_2112px.png" ]
+            function addRandomImage() {
+                let rngImg = Math.floor((Math.random() * 4));
+                let rngX = Math.floor((Math.random() * ($(window).width() - 91)));
+                let rngY = Math.floor((Math.random() * ($(window).height() - 91)));
+                $( "#rain" ).append(`<img src="./${images[rngImg]}" style="top: ${rngY}px;left: ${rngX}px;" class="floating pop">`);
+            }
+
+            function checkLine(indexesToCheck) {
+                if(indexesToCheck.every(isSelected)) {
+                    indexesToCheck.forEach((item, index, arr) => $("#c"+ item).addClass('bingo'))
+                    makeItRain();
+                }
+            }
+
+            function continueBingo() {
+                clearInterval(interval);
+                $("#bingo").addClass("hidden");
+                audio.pause();
+            }
+
+            $( document ).ready(function() {
+                setGrid();
+            });
+
+            $(".cell").click(function() {
+                $(this).toggleClass('selected');
+                checkLine([0,1,2,3,4]);
+                checkLine([5,6,7,8,9]);
+                checkLine([10,11,12,13,14]);
+                checkLine([15,16,17,18,19]);
+                checkLine([20,21,22,23,24]);
+
+                checkLine([0,5,10,15,20]);
+                checkLine([1,6,11,16,21]);
+                checkLine([2,7,12,17,22]);
+                checkLine([3,8,13,18,23]);
+                checkLine([4,9,14,19,24]);
+
+                checkLine([0,6,12,18,24]);
+                checkLine([4,8,12,16,20]);
+            });
+
+            var transparencyTrigger = false;
+
+            function setTransparencyMode() {
+                transparencyTrigger = !transparencyTrigger;
+                if(transparencyTrigger) {
+                    $("html").css('background-color', '#00FF00');
+                    $("html").css('background-image', 'none');
+                    startDisplayInterval();
+
+                    $(".container")
+                        .mouseenter(function(){
+                            $(".cell").removeClass('animated-hidden');
+                            $(".cell").addClass('animated-visible');
+                            clearInterval(displayInterval);
+                        })
+                        .mouseleave(function() {
+                            startDisplayInterval();
+                        })
+                } else {
+                    $("html").css('background-color', '#36393F');
+                    $("html").css('background-image', 'url("./bear.jpg")');
+                    $(".cell").removeClass('animated-hidden');
+                    $(".cell").addClass('animated-visible');
+                    clearInterval(displayInterval);
+                    $(".container").unbind("mouseenter");
+                    $(".container").unbind("mouseleave");
+                }
+            }
+
+            function startDisplayInterval() {
+                displayInterval = setInterval(
+                    function() {
+                        if ($('.container:hover').length === 0) {
+                            $(".cell").addClass('animated-hidden');
+                            $(".cell").removeClass('animated-visible');
+                        }
+                    }
+                , 1000)
+            }
+        </script>
+    </body>
+</html>
